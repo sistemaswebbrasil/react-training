@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Button from '@material-ui/core/Button';
 
 export default class Home extends Component {
   state = { username: null };
@@ -11,6 +12,14 @@ export default class Home extends Component {
 
   render() {
     const { username } = this.state;
-    return <div>{username ? <h1>{`Hello ${username}`}</h1> : <h1>Loading.. please wait!</h1>}</div>;
+    return (
+      <div>
+        <Button variant="contained" color="primary">
+          Hello World
+        </Button>
+
+        {username ? <h1>{`Hello ${username}`}</h1> : <h1>Loading.. please wait!</h1>}
+      </div>
+    );
   }
 }
