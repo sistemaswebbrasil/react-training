@@ -1,21 +1,24 @@
-.container {
-  padding-right: 15px;
-  padding-left: 15px;
-  margin-right: auto;
-  margin-left: auto;
+:root {
+    --space: 1.5em 0;
+    --space: 2em 0;
 }
-@media (min-width: 768px) {
-  .container {
-    width: 750px;
-  }
+
+.Site {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
-@media (min-width: 992px) {
-  .container {
-    width: 970px;
-  }
+
+.Site-content {
+    flex: 1 0 auto;
+    padding: var(--space) var(--space) 0;
+    width: 100%;
 }
-@media (min-width: 1200px) {
-  .container {
-    width: 1170px;
-  }
+
+.Site-content:after {
+    content: '\00a0';
+    display: block;
+    margin-top: var(--space);
+    height: 0;
+    visibility: hidden;
 }

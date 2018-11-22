@@ -8,11 +8,17 @@ import './app.css';
 const App = () => (
   <React.Fragment>
     <CssBaseline />
-    <Header />
-    <div className="container">
-      <AppRouter />
+    <div className="App Site">
+      <div className="Site-content">
+        <div className="App-header">
+          <Header />
+        </div>
+        <div className="main">
+          <AppRouter />
+        </div>
+      </div>
+      <Footer />
     </div>
-    <Footer />
   </React.Fragment>
 );
 

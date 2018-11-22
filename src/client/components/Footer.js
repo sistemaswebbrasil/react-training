@@ -6,13 +6,9 @@ const styles = theme => ({
   footer: {
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing.unit * 6,
-
-
-    bottom: 0,
-    width: '100%',
-    position: 'absolute'
   }
 });
+
 
 function Footer(props) {
   const { classes } = props;
