@@ -1,7 +1,28 @@
 import React, { Component } from 'react';
-import Button from '@material-ui/core/Button';
+import PropTypes from 'prop-types';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/core/styles';
 
-export default class Home extends Component {
+const styles = {
+  card: {
+    minWidth: 275
+  },
+  bullet: {
+    display: 'inline-block',
+    margin: '0 2px',
+    transform: 'scale(0.8)'
+  },
+  title: {
+    fontSize: 14
+  },
+  pos: {
+    marginBottom: 12
+  }
+};
+
+class Home extends Component {
   state = { username: null };
 
   componentDidMount() {
@@ -11,15 +32,28 @@ export default class Home extends Component {
   }
 
   render() {
+    const { classes } = this.props;
     const { username } = this.state;
     return (
       <div>
-        <Button variant="contained" color="primary">
-          Hello World
-        </Button>
-
-        {username ? <h1>{`Hello ${username}`}</h1> : <h1>Loading.. please wait!</h1>}
+        <Card className={classes.card}>
+          <CardContent>
+            <Typography variant="h4" gutterBottom>
+              {username ? <p>{`Hello ${username}`}</p> : <p>Loading.. please wait!</p>}
+            </Typography>
+          </CardContent>
+        </Card>
       </div>
     );
   }
 }
+
+Home.propTypes = {
+  classes: PropTypes.shape({})
+};
+
+Home.defaultProps = {
+  classes: 'foo'
+};
+
+export default withStyles(styles)(Home);

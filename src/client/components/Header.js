@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -11,7 +12,8 @@ import Nav from './Nav';
 
 const styles = {
   root: {
-    flexGrow: 1
+    flexGrow: 1,
+    paddingBottom: '10px'
   },
   grow: {
     flexGrow: 1
@@ -22,49 +24,37 @@ const styles = {
   }
 };
 
-class Header extends React.Component {
-  state = {
-    open: false
-  };
-
-  handleClose = () => {
-    this.setState({
-      open: false
-    });
-  };
-
-  handleClick = () => {
-    this.setState({
-      open: true
-    });
-  };
-
-  render() {
-    const { classes } = this.props;
-    const { open } = this.state;
-
-    return (
-      <div className={classes.root}>
-        <AppBar position="static">
-          <Toolbar>
-            <IconButton
-              className={classes.menuButton}
-              color="inherit"
-              aria-label="Menu"
-              component={NavLink}
-              to="/"
-            >
-              <Home />
-            </IconButton>
-            <Typography variant="h6" color="inherit" className={classes.grow}>
-              React Training
-            </Typography>
-            <Nav />
-          </Toolbar>
-        </AppBar>
-      </div>
-    );
-  }
+function Header(props) {
+  const { classes } = props;
+  return (
+    <div className={classes.root}>
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton
+            className={classes.menuButton}
+            color="inherit"
+            aria-label="Menu"
+            component={NavLink}
+            to="/"
+          >
+            <Home />
+          </IconButton>
+          <Typography variant="h6" color="inherit" className={classes.grow}>
+            React Training
+          </Typography>
+          <Nav />
+        </Toolbar>
+      </AppBar>
+    </div>
+  );
 }
+
+Header.propTypes = {
+  classes: PropTypes.shape({})
+};
+
+Header.defaultProps = {
+  classes: 'foo'
+};
 
 export default withRoot(withStyles(styles)(Header));
