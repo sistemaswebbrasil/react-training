@@ -7,7 +7,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import { Home } from '@material-ui/icons';
 import { NavLink } from 'react-router-dom';
-import withRoot from '../withRoot';
 import Nav from './Nav';
 
 const styles = {
@@ -36,6 +35,7 @@ function Header(props) {
             aria-label="Menu"
             component={NavLink}
             to="/"
+            replace={true}
           >
             <Home />
           </IconButton>
@@ -57,4 +57,4 @@ Header.defaultProps = {
   classes: 'foo'
 };
 
-export default withRoot(withStyles(styles)(Header));
+export default withStyles(styles)(Header);

@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 const styles = theme => ({
   footer: {
     backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing.unit * 6
+    padding: theme.spacing.unit * 1
   }
 });
 
@@ -14,13 +14,11 @@ function Footer(props) {
   const { classes } = props;
 
   return (
-    <div>
-      <footer className={classes.footer}>
-        <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-          @sistemaswebbrasil
-        </Typography>
-      </footer>
-    </div>
+    <footer className={classes.footer}>
+      <Typography variant="subtitle1" align="left" color="textSecondary" component="p">
+        @sistemaswebbrasil
+      </Typography>
+    </footer>
   );
 }
 
