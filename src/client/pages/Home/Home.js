@@ -9,20 +9,18 @@ class Home extends Component {
     this.state = { credit: 0, debt: 0 };
   }
 
-  componentDidMount() {
-    axios.get(`${BASE_URL}/billingCycles/summary`).then(resp => this.setState(resp.data));
-  }
+  // componentDidMount() {
+  //   axios.get(`${BASE_URL}/billingCycles/summary`).then(resp => this.setState(resp.data));
+  // }
 
   render() {
     const { credit, debt } = this.state;
-    return (
-      <div>
+    return <div>
         <Typography variant="h4" gutterBottom component="h2">
           Testando
         </Typography>
-        <div>{credit}</div>
-      </div>
-    );
+        <div>{this.props.name || ''}</div>
+      </div>;
   }
 }
 

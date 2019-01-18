@@ -16,7 +16,8 @@ httpClient.setToken = function(token) {
 
 httpClient.getCurrentUser = function() {
   const token = this.getToken();
-  console.log(token);
+  // console.log("Token: "+ token);
+  // console.log(jwtDecode(token));
   if (token) return jwtDecode(token);
   return null;
 };
@@ -27,6 +28,7 @@ httpClient.logIn = function(credentials) {
     url: `${BASE_URL}/login`,
     data: credentials
   }).then(serverResponse => {
+    console.log(serverResponse);
     const token = serverResponse.data.token;
     if (token) {
       // sets token as an included header for all subsequent api requests

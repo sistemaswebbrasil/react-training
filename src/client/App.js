@@ -19,8 +19,8 @@ const styles = theme => ({
 
 function App(props) {
   const { classes } = props;
-
   return <div className="App Site">
+      {console.log(props)}
       <div className="Site-content">
         <div className="App-header">
           <Header />
