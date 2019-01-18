@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
+import axios from 'axios';
+
 import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
 import About from './pages/About';
@@ -19,14 +21,19 @@ export class AppRouter extends Component {
 
   onLoginSuccess(user) {
     this.setState({ user });
+    axios.defaults.headers.common['authorization'] = user.token;
   }
 
   componentWillMount() {
-    if (this.state.user) {
-      validateToken(this.state.user.token).then(valid => {
+    const { user } = this.state;
+    if (user) {
+      validateToken(user.token).then(valid => {
+        console.log(valid);
         if (!valid) {
           this.setState({ user: null });
           this.props.history.push('/login');
+        } else {
+          axios.defaults.headers.common['authorization'] = user.token;
         }
       });
     }
@@ -39,7 +46,7 @@ export class AppRouter extends Component {
         render={props => (
           <div>
             <Layout>
-              <Component {...props} {...user} />
+              <Component {...props} user={user} />
             </Layout>
           </div>
         )}
@@ -71,13 +78,14 @@ export class AppRouter extends Component {
             <AppRoute exact path="/" layout={MainTemplate} component={Home} user={user} />
             <AppRoute exact path="/about" layout={MainTemplate} component={About} user={user} />
             <AppRoute exact path="/users" layout={MainTemplate} component={Users} user={user} />
+            <AppRoute exact path="/login" layout={LoginTemplate} component={Login} user={user} />
           </Switch>
         )}
         {!user && (
           <Login onLoginSuccess={this.onLoginSuccess.bind(this)} />
-        // <Switch>
-        //   <AppRoute exact path="/login" layout={LoginTemplate} component={Login} user={user} />
-        // </Switch>
+          // <Switch>
+          //   <AppRoute exact path="/login" layout={LoginTemplate} component={Login} user={user} />
+          // </Switch>
         )}
       </div>
     );

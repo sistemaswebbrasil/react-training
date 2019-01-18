@@ -19,7 +19,8 @@ function submit(values, url) {
       return resp.data;
     })
     .catch(e => {
-      return e.response.data.errors.forEach(error => toastr.error('Erro', error));
+      localStorage.removeItem(userKey);
+      return e.response.data.errors; //e.response.data.errors.forEach(error => toastr.error('Erro', error));
     });
 }
 

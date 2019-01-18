@@ -18,7 +18,6 @@ class Login extends Component {
     super(props);
 
     this.state = {
-
       fields: { email: 'adriano.faria@gmail.com', password: '' }
     };
   }
@@ -36,13 +35,16 @@ class Login extends Component {
     evt.preventDefault();
 
     login(this.state.fields).then(resp => {
-      this.props.onLoginSuccess(resp);
-      this.props.history.push('/');
+      console.log(resp);
+      if (resp.token) {
+        this.props.onLoginSuccess(resp);
+        this.props.history.push('/');
+      }
     });
   }
 
   componentWillMount() {
-    if (this.props.token) {
+    if (this.props.user) {
       this.props.history.push('/');
     }
   }
