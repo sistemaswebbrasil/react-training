@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import axios from 'axios';
+import api from './api';
 
 import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
@@ -21,19 +22,15 @@ export class AppRouter extends Component {
 
   onLoginSuccess(user) {
     this.setState({ user });
-    axios.defaults.headers.common['authorization'] = user.token;
   }
 
   componentWillMount() {
     const { user } = this.state;
     if (user) {
       validateToken(user.token).then(valid => {
-        console.log(valid);
         if (!valid) {
           this.setState({ user: null });
           this.props.history.push('/login');
-        } else {
-          axios.defaults.headers.common['authorization'] = user.token;
         }
       });
     }
@@ -81,12 +78,7 @@ export class AppRouter extends Component {
             <AppRoute exact path="/login" layout={LoginTemplate} component={Login} user={user} />
           </Switch>
         )}
-        {!user && (
-          <Login onLoginSuccess={this.onLoginSuccess.bind(this)} />
-          // <Switch>
-          //   <AppRoute exact path="/login" layout={LoginTemplate} component={Login} user={user} />
-          // </Switch>
-        )}
+        {!user && <Login onLoginSuccess={this.onLoginSuccess.bind(this)} />}
       </div>
     );
   }

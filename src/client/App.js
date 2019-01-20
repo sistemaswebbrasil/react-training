@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Footer from './components/Footer';
-import AppRouter from './AppRouter';
 import Header from './components/Header';
 import withRoot from './withRoot';
 import './app.css';
@@ -19,8 +18,8 @@ const styles = theme => ({
 
 function App(props) {
   const { classes } = props;
-  return <div className="App Site">
-      {console.log(props)}
+  return (
+    <div className="App Site">
       <div className="Site-content">
         <div className="App-header">
           <Header />
@@ -36,7 +35,8 @@ function App(props) {
         </div>
       </div>
       <Footer />
-    </div>;
+    </div>
+  );
 }
 
 export default withRoot(withStyles(styles)(App));

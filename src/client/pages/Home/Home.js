@@ -1,16 +1,21 @@
 import React, { Component } from 'react';
 import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
+import api from '../../api';
 const BASE_URL = 'http://localhost:3003/api';
 
 class Home extends Component {
   constructor(props) {
     super(props);
-    this.state = { credit: 0, debt: 0 };
+    this.state = {
+      credit: 0,
+      debt: 0
+    };
   }
 
   componentDidMount() {
-    axios.get(`${BASE_URL}/billingCycles/summary`).then(resp => this.setState(resp.data));
+    api.get(`${BASE_URL}/users`).then(resp => console.log(resp.data));
+    // api.get(`${BASE_URL}/billingCycles/summary`).then(resp => this.setState(resp.data));
   }
 
   render() {
