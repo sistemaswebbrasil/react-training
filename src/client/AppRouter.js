@@ -30,7 +30,7 @@ export class AppRouter extends Component {
       validateToken(user.token).then(valid => {
         if (!valid) {
           this.setState({ user: null });
-          this.props.history.push('/login');
+          // this.props.history.push('/login');
         }
       });
     }

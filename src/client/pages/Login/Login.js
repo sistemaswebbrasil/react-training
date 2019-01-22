@@ -33,9 +33,7 @@ class Login extends Component {
 
   onFormSubmit(evt) {
     evt.preventDefault();
-
     login(this.state.fields).then(resp => {
-      console.log(resp);
       if (resp.token) {
         this.props.onLoginSuccess(resp);
         this.props.history.push('/');
