@@ -17,12 +17,11 @@ const styles = theme => ({
 });
 
 function App(props) {
-  const { classes } = props;
-  return (
-    <div className="App Site">
+  const { classes,user } = props;
+  return <div className="App Site">
       <div className="Site-content">
         <div className="App-header">
-          <Header />
+          <Header user={user} />
         </div>
         <div className="main">
           <div className={classes.root}>
@@ -35,8 +34,7 @@ function App(props) {
         </div>
       </div>
       <Footer />
-    </div>
-  );
+    </div>;
 }
 
 export default withRoot(withStyles(styles)(App));

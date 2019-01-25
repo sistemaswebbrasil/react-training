@@ -8,6 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 import { Home } from '@material-ui/icons';
 import { NavLink } from 'react-router-dom';
 import Nav from './Nav';
+import UserMenu from './UserMenu';
 
 const styles = {
   root: {
@@ -24,7 +25,7 @@ const styles = {
 };
 
 function Header(props) {
-  const { classes } = props;
+  const { classes, user } = props;
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -43,6 +44,7 @@ function Header(props) {
             React Training
           </Typography>
           <Nav />
+          <UserMenu user={user}/>
         </Toolbar>
       </AppBar>
     </div>

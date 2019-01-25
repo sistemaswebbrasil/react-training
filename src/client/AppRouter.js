@@ -63,7 +63,7 @@ export class AppRouter extends Component {
       const childrenWithProps = React.Children.map(children, child =>
         React.cloneElement(child, { user: this.state.user })
       );
-      return <App>{childrenWithProps}</App>;
+      return <App user={this.state.user}>{childrenWithProps}</App>;
     };
 
     const { user } = this.state;
