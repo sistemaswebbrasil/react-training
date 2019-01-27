@@ -14,17 +14,19 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { login } from './LoginService';
+import { withSnackbar } from 'notistack';
 
 class Login extends Component {
   constructor(props) {
     super(props);
-
+    this.onFormSubmit = this.onFormSubmit.bind(this);
     this.state = {
       fields: {
         email: 'adriano.faria@gmail.com',
         password: ''
       },
-      showPassword: false
+      showPassword: false,
+      errors: null
     };
   }
 
@@ -39,12 +41,22 @@ class Login extends Component {
 
   onFormSubmit(evt) {
     evt.preventDefault();
-    login(this.state.fields).then(resp => {
-      if (resp.token) {
-        this.props.onLoginSuccess(resp);
-        this.props.history.push('/');
-      }
-    });
+    login(this.state.fields)
+      .then(resp => {
+        if (resp.token) {
+          console.log('ok??');
+          this.props.onLoginSuccess(resp);
+        } else {
+          console.log('Erro como resposta');
+        }
+      })
+
+      .catch(e => {
+        this.setState({ errors: e });
+        if (e !== undefined) {
+          this.props.enqueueSnackbar(e.data.errors, { variant: 'error' });
+        }
+      });
   }
 
   componentWillMount() {
@@ -58,7 +70,8 @@ class Login extends Component {
   };
 
   render() {
-    const { email, password, showPassword } = this.state.fields;
+    const { email, password } = this.state.fields;
+    const { showPassword, errors } = this.state;
     const { classes } = this.props;
 
     return (
@@ -76,31 +89,48 @@ class Login extends Component {
             onChange={this.onInputChange.bind(this)}
             onSubmit={this.onFormSubmit.bind(this)}
           >
-            <FormControl margin="normal" required fullWidth>
+            <FormControl
+              margin="normal"
+              required
+              fullWidth
+              error={errors ? errors.status == 401 : false}
+            >
               <InputLabel htmlFor="email">Email Address</InputLabel>
-              <Input id="email" name="email" autoComplete="email" value={email} autoFocus />
+              <Input
+                id="email"
+                name="email"
+                autoComplete="email"
+                value={email}
+                error={errors ? errors.status == 401 : false}
+                autoFocus
+              />
             </FormControl>
-            <FormControl margin="normal" required fullWidth>
+            <FormControl
+              margin="normal"
+              required
+              fullWidth
+              error={errors ? errors.status == 401 : false}
+            >
               <InputLabel htmlFor="password">Password</InputLabel>
               <Input
                 name="password"
-                type={this.state.showPassword ? 'text' : 'password'}
+                type={showPassword ? 'text' : 'password'}
                 id="password"
                 autoComplete="current-password"
                 value={password}
+                error={errors ? errors.status == 401 : false}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="Toggle password visibility"
                       onClick={this.handleClickShowPassword}
                     >
-                      {this.state.showPassword ? <Visibility /> : <VisibilityOff />}
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
                     </IconButton>
                   </InputAdornment>
                 }
               />
             </FormControl>
-
             <Button
               type="submit"
               fullWidth
@@ -149,4 +179,4 @@ const styles = theme => ({
   }
 });
 
-export default withStyles(styles)(Login);
+export default withStyles(styles)(withSnackbar(Login));

@@ -29,9 +29,10 @@ class Home extends Component {
           Usuários:
         </Typography>
         <ul>
-          {users.map(function(value, index) {
-            return <li key={index}>{value.name}</li>;
-          })}
+          {users &&
+            users.map(function(value, index) {
+              return <li key={index}>{value.name}</li>;
+            })}
         </ul>
       </div>
     );

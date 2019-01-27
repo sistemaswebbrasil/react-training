@@ -36,27 +36,46 @@ export class UserMenu extends Component {
     this.setState({ anchorEl: null });
   };
 
+  handleLogout = () => {
+    this.props.logout();
+  };
+
   render() {
-    const {classes, user } = this.props;
+    const { classes, user } = this.props;
 
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
-    return <div>
-        {user && <div>
-            <MenuItem className={classes.menuItem} aria-owns={open ? 'menu-appbar' : undefined} aria-haspopup="true" onClick={this.handleMenu} color="inherit">
+    return (
+      <div>
+        {user && (
+          <div>
+            <MenuItem
+              className={classes.menuItem}
+              aria-owns={open ? 'menu-appbar' : undefined}
+              aria-haspopup="true"
+              onClick={this.handleMenu}
+              color="inherit"
+            >
               <ListItemIcon className={classes.icon}>
                 <AccountCircle />
               </ListItemIcon>
               <ListItemText classes={{ primary: classes.primary }} primary={user.name} />
             </MenuItem>
 
-            <Menu id="menu-appbar" anchorEl={anchorEl} anchorOrigin={{ vertical: 'top', horizontal: 'right' }} transformOrigin={{ vertical: 'top', horizontal: 'right' }} open={open} onClose={this.handleClose}>
-              <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-              <MenuItem onClick={this.handleClose}>My account</MenuItem>
-              <MenuItem onClick={this.handleClose}>Logout</MenuItem>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorEl}
+              anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+              transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+              open={open}
+              onClose={this.handleClose}
+            >
+              <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
             </Menu>
-          </div>}
-      </div>;
+          </div>
+        )}
+      </div>
+    );
   }
 }
 

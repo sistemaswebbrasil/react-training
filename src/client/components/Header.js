@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -25,7 +24,7 @@ const styles = {
 };
 
 function Header(props) {
-  const { classes, user } = props;
+  const { classes, user, logout } = props;
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -44,19 +43,11 @@ function Header(props) {
             React Training
           </Typography>
           <Nav />
-          <UserMenu user={user}/>
+          <UserMenu user={user} logout={logout} />
         </Toolbar>
       </AppBar>
     </div>
   );
 }
-
-Header.propTypes = {
-  classes: PropTypes.shape({})
-};
-
-Header.defaultProps = {
-  classes: 'foo'
-};
 
 export default withStyles(styles)(Header);

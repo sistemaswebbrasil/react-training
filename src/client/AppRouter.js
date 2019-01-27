@@ -1,19 +1,22 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import axios from 'axios';
-import api from './api';
-
 import Home from './pages/Home/Home';
-import Login from './pages/Login/Login';
+import Login from './pages/Login';
 import About from './pages/About';
 import Users from './pages/Users';
 import App from './App';
-import { validateToken } from './pages/Login/LoginService';
+import { validateToken, logout } from './pages/Login/LoginService';
+import { withRouter } from 'react-router-dom';
+import withRoot from './withRoot';
+import api from './api';
+
 const userKey = '_training_user_key_';
 
 export class AppRouter extends Component {
   constructor(props) {
     super(props);
+
+    this.logOut = this.logOut.bind(this);
 
     this.state = {
       user: JSON.parse(localStorage.getItem(userKey))
@@ -21,7 +24,16 @@ export class AppRouter extends Component {
   }
 
   onLoginSuccess(user) {
+    // api.defaults.headers.common['Authorization'] = 'asdasdasd';
+    api.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
     this.setState({ user });
+  }
+
+  logOut() {
+    logout();
+    this.setState({ user: null });
+
+    // this.props.history.push('/login');
   }
 
   componentWillMount() {
@@ -30,7 +42,7 @@ export class AppRouter extends Component {
       validateToken(user.token).then(valid => {
         if (!valid) {
           this.setState({ user: null });
-          // this.props.history.push('/login');
+          this.props.history.push('/login');
         }
       });
     }
@@ -63,7 +75,11 @@ export class AppRouter extends Component {
       const childrenWithProps = React.Children.map(children, child =>
         React.cloneElement(child, { user: this.state.user })
       );
-      return <App user={this.state.user}>{childrenWithProps}</App>;
+      return (
+        <App user={this.state.user} logout={this.logOut}>
+          {childrenWithProps}
+        </App>
+      );
     };
 
     const { user } = this.state;
@@ -84,4 +100,5 @@ export class AppRouter extends Component {
   }
 }
 
-export default AppRouter;
+// export default withRouter(AppRouter);
+export default withRouter(withRoot(AppRouter));
