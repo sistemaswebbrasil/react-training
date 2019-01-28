@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import Home from './pages/Home/Home';
 import Login from './pages/Login';
 import About from './pages/About';
-import Users from './pages/Users';
+import Users from './pages/User';
 import App from './App';
 import { validateToken, logout } from './pages/Login/LoginService';
 import { withRouter } from 'react-router-dom';

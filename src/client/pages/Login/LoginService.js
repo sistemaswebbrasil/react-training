@@ -10,7 +10,6 @@ export function login(values) {
 export function logout() {
   localStorage.removeItem(userKey);
   delete api.defaults.headers.common;
-  console.log('Removeu o token');
   return true;
 }
 

@@ -20,14 +20,7 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.onFormSubmit = this.onFormSubmit.bind(this);
-    this.state = {
-      fields: {
-        email: 'adriano.faria@gmail.com',
-        password: ''
-      },
-      showPassword: false,
-      errors: null
-    };
+    this.state = { fields: { email: 'adriano.faria@gmail.com', password: 'Flabia95@' }, showPassword: false, errors: null };
   }
 
   onInputChange(evt) {
@@ -44,10 +37,7 @@ class Login extends Component {
     login(this.state.fields)
       .then(resp => {
         if (resp.token) {
-          console.log('ok??');
           this.props.onLoginSuccess(resp);
-        } else {
-          console.log('Erro como resposta');
         }
       })
 

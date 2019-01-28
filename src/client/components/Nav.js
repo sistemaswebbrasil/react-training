@@ -2,11 +2,13 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 
-const Nav = () => (
+const Nav = props => (
   <div>
-    <Button replace component={NavLink} to="/login" color="inherit">
-      Login
-    </Button>
+    {!props.user && (
+      <Button replace component={NavLink} to="/login" color="inherit">
+        Login
+      </Button>
+    )}
     <Button replace component={NavLink} to="/about" color="inherit">
       About
     </Button>

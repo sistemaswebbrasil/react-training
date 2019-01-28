@@ -1,42 +1,21 @@
 import React, { Component } from 'react';
-import Typography from '@material-ui/core/Typography';
+import ContentHeader from '../../components/ContentHeader';
 import api from '../../api';
+import { withSnackbar } from 'notistack';
 
 class Home extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      users: [],
-      credit: 0,
-      debt: 0
-    };
+    this.state = { users: [] };
   }
-
-  componentDidMount() {
-    api.get('/users').then(resp => this.setState({ users: resp.data }));
-  }
-
   render() {
-    const { users } = this.state;
+    const { user } = this.props;
     return (
       <div>
-        <Typography variant="h4" gutterBottom component="h2">
-          Testando
-        </Typography>
-        <div>Usuário logado: {this.props.user.name || ''}</div>
-
-        <Typography variant="h6" gutterBottom component="h2">
-          Usuários:
-        </Typography>
-        <ul>
-          {users &&
-            users.map(function(value, index) {
-              return <li key={index}>{value.name}</li>;
-            })}
-        </ul>
+        <ContentHeader title={`Bem vindo ${user.name}`} />
       </div>
     );
   }
 }
 
-export default Home;
+export default withSnackbar(Home);

@@ -25,29 +25,20 @@ const styles = {
 
 function Header(props) {
   const { classes, user, logout } = props;
-  return (
-    <div className={classes.root}>
+  return <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="Menu"
-            component={NavLink}
-            to="/"
-            replace={true}
-          >
+          <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" component={NavLink} to="/" replace={true}>
             <Home />
           </IconButton>
           <Typography variant="h6" color="inherit" className={classes.grow}>
             React Training
           </Typography>
-          <Nav />
+          <Nav user={user} />
           <UserMenu user={user} logout={logout} />
         </Toolbar>
       </AppBar>
-    </div>
-  );
+    </div>;
 }
 
 export default withStyles(styles)(Header);
