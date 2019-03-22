@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { withSnackbar } from 'notistack';
 import { withStyles } from '@material-ui/core/styles';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+import ButtonBase from '@material-ui/core/ButtonBase';
+import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import ContentHeader from '../../components/ContentHeader';
 import api from '../../api';
 import Table from './Table';
 import Teste from './teste';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
 
 const styles = theme => ({
   fab: {
@@ -41,9 +44,11 @@ class Users extends Component {
     const { classes, users } = this.state;
     return (
       <div>
-            <ContentHeader title={`Usuários`} className={classes.fab} />
-        <Fab color="primary" aria-label="Add">
-          <AddIcon />
+        <ContentHeader title={`Usuários`} />
+        <Fab size="small" color="secondary" color="primary" aria-label="Add">
+          <ButtonBase component={Link} to="/users/form">
+            <AddIcon />
+          </ButtonBase>
         </Fab>
         <Table items={users} />
       </div>

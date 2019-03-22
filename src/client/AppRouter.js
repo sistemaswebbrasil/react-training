@@ -4,6 +4,7 @@ import Home from './pages/Home/Home';
 import Login from './pages/Login';
 import About from './pages/About';
 import Users from './pages/User';
+import UserForm from './pages/User/UserForm';
 import App from './App';
 import { validateToken, logout } from './pages/Login/LoginService';
 import { withRouter } from 'react-router-dom';
@@ -91,6 +92,13 @@ export class AppRouter extends Component {
             <AppRoute exact path="/" layout={MainTemplate} component={Home} user={user} />
             <AppRoute exact path="/about" layout={MainTemplate} component={About} user={user} />
             <AppRoute exact path="/users" layout={MainTemplate} component={Users} user={user} />
+            <AppRoute
+              exact
+              path="/users/form"
+              layout={MainTemplate}
+              component={UserForm}
+              user={user}
+            />
             <AppRoute exact path="/login" layout={LoginTemplate} component={Login} user={user} />
           </Switch>
         )}
