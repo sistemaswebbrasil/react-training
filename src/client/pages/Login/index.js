@@ -20,7 +20,7 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.onFormSubmit = this.onFormSubmit.bind(this);
-    this.state = { fields: { email: 'adriano.faria@gmail.com', password: 'Flabia95@' }, showPassword: false, errors: null };
+    this.state = { fields: { email: 'adriano.faria@gmail.com', password: '' }, showPassword: false, errors: null };
   }
 
   onInputChange(evt) {
