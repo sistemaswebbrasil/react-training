@@ -121,13 +121,7 @@ class Login extends Component {
                 }
               />
             </FormControl>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
+            <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit} >
               Sign in
             </Button>
           </form>
