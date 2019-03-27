@@ -15,12 +15,17 @@ import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { login } from './LoginService';
 import { withSnackbar } from 'notistack';
+import Messages from '../../components/Messages';
 
 class Login extends Component {
   constructor(props) {
     super(props);
     this.onFormSubmit = this.onFormSubmit.bind(this);
-    this.state = { fields: { email: 'adriano.faria@gmail.com', password: '' }, showPassword: false, errors: null };
+    this.state = {
+      fields: { email: 'adriano.faria@gmail.com', password: 'abc' },
+      showPassword: false,
+      errors: null
+    };
   }
 
   onInputChange(evt) {
@@ -44,7 +49,7 @@ class Login extends Component {
       .catch(e => {
         this.setState({ errors: e });
         if (e !== undefined) {
-          this.props.enqueueSnackbar(e.data.errors, { variant: 'error' });
+          this.props.enqueueSnackbar(Messages(e), { variant: 'error' });
         }
       });
   }
@@ -121,7 +126,13 @@ class Login extends Component {
                 }
               />
             </FormControl>
-            <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit} >
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
               Sign in
             </Button>
           </form>

@@ -5,14 +5,14 @@ let instance;
 
 if (token) {
   instance = axios.create({
-    baseURL: 'http://localhost:3003/api',
+    baseURL: '/api/',
     headers: {
-      Authorization: token
+      Authorization: `Bearer ${token}`
     }
   });
 } else {
   instance = axios.create({
-    baseURL: 'http://localhost:3003/api'
+    baseURL: '/api/'
   });
 }
 
@@ -20,7 +20,9 @@ instance.interceptors.request.use(
   function(config) {
     const { token } = JSON.parse(localStorage.getItem(userKey)) || '';
     if (token && !config.headers.Authorization) {
-      config.headers.Authorization = token;
+      config.headers.Authorization = `Bearer ${token}`;
+    } else {
+      delete axios.defaults.headers.common['Authorization'];
     }
     return config;
   },

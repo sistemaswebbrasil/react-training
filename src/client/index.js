@@ -9,12 +9,13 @@ import AppRouter from './AppRouter';
 ReactDOM.render(
   <HashRouter>
     <SnackbarProvider
+      key={1}
       maxSnack={3}
-      action={[
+      action={
         <IconButton aria-label="Delete">
           <DeleteIcon />
         </IconButton>
-      ]}
+      }
     >
       <AppRouter />
     </SnackbarProvider>

@@ -25,15 +25,19 @@ function List(props) {
       <Table className={classes.table}>
         <TableHead>
           <TableRow>
-            <TableCell>Nome</TableCell>
+            <TableCell>ID</TableCell>
+            <TableCell>User Name</TableCell>
             <TableCell>Email</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {items.map(row => (
-            <TableRow key={row._id}>
+          {items.map((row, key) => (
+            <TableRow key={key}>
               <TableCell component="th" scope="row">
-                {row.name}
+                {row.id}
+              </TableCell>
+              <TableCell component="th" scope="row">
+                {row.username}
               </TableCell>
               <TableCell component="th" scope="row">
                 {row.email}

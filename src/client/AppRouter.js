@@ -20,14 +20,14 @@ export class AppRouter extends Component {
     this.logOut = this.logOut.bind(this);
 
     this.state = {
-      user: JSON.parse(localStorage.getItem(userKey))
+      user: null
     };
   }
 
-  onLoginSuccess(user) {
+  onLoginSuccess(resp) {
     // api.defaults.headers.common['Authorization'] = 'asdasdasd';
     api.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-    this.setState({ user });
+    this.setState({ user: resp.user });
   }
 
   logOut() {
@@ -38,14 +38,16 @@ export class AppRouter extends Component {
   }
 
   componentWillMount() {
-    const { user } = this.state;
-    if (user) {
-      validateToken(user.token).then(valid => {
-        if (!valid) {
+    if (localStorage.getItem(userKey)) {
+      const { user, token } = JSON.parse(localStorage.getItem(userKey));
+      validateToken(token)
+        .then(() => {
+          this.setState({ user: user });
+        })
+        .catch(() => {
           this.setState({ user: null });
           this.props.history.push('/login');
-        }
-      });
+        });
     }
   }
 

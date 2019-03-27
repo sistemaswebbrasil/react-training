@@ -3,11 +3,20 @@
   "version": "1.0.0",
   "description": "Projeto de estudos com React + Express + Webpack.",
   "main": "src/server/index.js",
+  "proxy": {
+    "/proxy": {
+      "target": "http:/localhost:3333",
+      "pathRewrite": {
+        "^/proxy": ""
+      },
+      "changeOrigin": true
+    }
+  },
   "scripts": {
     "build": "webpack --mode production",
     "start": "npm run build && node src/server/index.js",
     "client": "webpack-dev-server --mode development --devtool inline-source-map --hot",
-    "server": "nodemon src/server/index.js",
+    "server": "node src/server/server.js",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "Sandeep Raveesh",

@@ -12,7 +12,8 @@ class Home extends Component {
     const { user } = this.props;
     return (
       <div>
-        <ContentHeader title={`Bem vindo ${user.name}`} />
+        <h1>{JSON.stringify(user)}</h1>
+        <ContentHeader title={`Bem vindo ${user.username}`} />
       </div>
     );
   }

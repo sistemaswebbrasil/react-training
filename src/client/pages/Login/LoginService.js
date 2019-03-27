@@ -4,17 +4,17 @@ import api from '../../api';
 const userKey = '_training_user_key_';
 
 export function login(values) {
-  return submit(values, `${consts.OAPI_URL}/login`);
+  return submit(values, `login`);
 }
 
 export function logout() {
   localStorage.removeItem(userKey);
-  delete api.defaults.headers.common;
+  delete api.defaults.headers.common['Authorization'];
   return true;
 }
 
 export function signup(values) {
-  return submit(values, `${consts.OAPI_URL}/signup`);
+  return submit(values, `signup`);
 }
 
 function submit(values, url) {
@@ -35,14 +35,9 @@ function submit(values, url) {
 export function validateToken(token) {
   if (token) {
     return api
-      .post(`${consts.OAPI_URL}/validateToken`, { token })
-      .then(resp => {
-        if (!resp.data.valid) {
-          localStorage.removeItem(userKey);
-        }
-        return resp.data.valid;
-      })
-      .catch(e => false);
+      .get(`profile`)
+      .then(() => true)
+      .catch(() => false);
   } else {
     return false;
   }
