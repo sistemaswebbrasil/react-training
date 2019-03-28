@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component ,Fragment} from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Home from './pages/Home/Home';
 import Login from './pages/Login';
@@ -10,6 +10,7 @@ import { validateToken, logout } from './pages/Login/LoginService';
 import { withRouter } from 'react-router-dom';
 import withRoot from './withRoot';
 import api from './api';
+import { AuthContext,session} from './contexts/AuthContext'
 
 const userKey = '_training_user_key_';
 
@@ -20,7 +21,8 @@ export class AppRouter extends Component {
     this.logOut = this.logOut.bind(this);
 
     this.state = {
-      user: null
+      user: null,
+      session: session
     };
   }
 
@@ -28,12 +30,13 @@ export class AppRouter extends Component {
     // api.defaults.headers.common['Authorization'] = 'asdasdasd';
     api.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
     this.setState({ user: resp.user });
+    this.setState({ session: {"user":{"name":resp.username,"email":resp.email,"logged":true}} });
   }
 
   logOut() {
     logout();
     this.setState({ user: null });
-
+    this.setState({ session: {"user":{"name":null,"email":null,"logged":false}} });
     // this.props.history.push('/login');
   }
 
@@ -43,26 +46,31 @@ export class AppRouter extends Component {
       validateToken(token)
         .then(() => {
           this.setState({ user: user });
+          this.setState({ session: {"user":{"name":user.username,"email":user.email,"logged":true}} });
         })
         .catch(() => {
-          this.setState({ user: null });
+          this.setState({ session: {"user":{"name":null,"email":null,"logged":false}} });
           this.props.history.push('/login');
         });
     }
   }
 
   render() {
+    const { session } = this.state;
     const AppRoute = ({ component: Component, layout: Layout, user, onLoginSuccess, ...rest }) => (
-      <Route
-        {...rest}
-        render={props => (
-          <div>
-            <Layout>
-              <Component {...props} user={user} />
-            </Layout>
-          </div>
-        )}
-      />
+
+      <Fragment>
+          <Route
+            {...rest}
+            render={props => (
+              <div>
+                <Layout>
+                  <Component {...props} user={user} />
+                </Layout>
+              </div>
+            )}
+          />
+      </Fragment>
     );
 
     const LoginTemplate = props => {
@@ -89,22 +97,31 @@ export class AppRouter extends Component {
 
     return (
       <div>
-        {user && (
-          <Switch>
-            <AppRoute exact path="/" layout={MainTemplate} component={Home} user={user} />
-            <AppRoute exact path="/about" layout={MainTemplate} component={About} user={user} />
-            <AppRoute exact path="/users" layout={MainTemplate} component={Users} user={user} />
-            <AppRoute
-              exact
-              path="/users/form"
-              layout={MainTemplate}
-              component={UserForm}
-              user={user}
-            />
-            <AppRoute exact path="/login" layout={LoginTemplate} component={Login} user={user} />
-          </Switch>
-        )}
-        {!user && <Login onLoginSuccess={this.onLoginSuccess.bind(this)} />}
+
+        <AuthContext.Provider value={this.state}>
+
+          {user && (
+            <Switch>
+              <AppRoute exact path="/" layout={MainTemplate} component={Home} user={user} />
+              <AppRoute exact path="/about" layout={MainTemplate} component={About} user={user} />
+              <AppRoute exact path="/users" layout={MainTemplate} component={Users} user={user} />
+              <AppRoute
+                exact
+                path="/users/form"
+                layout={MainTemplate}
+                component={UserForm}
+                user={user}
+              />
+              <AppRoute exact path="/login" layout={LoginTemplate} component={Login} user={user} />
+            </Switch>
+          )}
+          {!user && <Login onLoginSuccess={this.onLoginSuccess.bind(this)} />}
+
+
+        </AuthContext.Provider>
+
+
+
       </div>
     );
   }

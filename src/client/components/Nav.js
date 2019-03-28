@@ -1,10 +1,15 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import FavoriteIcon from '@material-ui/icons/Favorite';
 import { NavLink } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 import MuiBottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
+
+
+import Home from '@material-ui/icons/Home';
+import Help from '@material-ui/icons/Help';
+import People from '@material-ui/icons/People';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 import RestoreIcon from '@material-ui/icons/Restore';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 
@@ -48,8 +53,8 @@ class IconLabelTabs extends React.Component {
         className={classes.root}
       >
         <BottomNavigationAction
-          label="Recents"
-          icon={<RestoreIcon />}
+          label="Home"
+          icon={<Home />}
           replace
           component={NavLink}
           to="/"
@@ -60,8 +65,8 @@ class IconLabelTabs extends React.Component {
           }}
         />
         <BottomNavigationAction
-          label="Favorites"
-          icon={<FavoriteIcon />}
+          label="About"
+          icon={<Help />}
           replace
           component={NavLink}
           to="/about"
@@ -72,8 +77,8 @@ class IconLabelTabs extends React.Component {
           }}
         />
         <BottomNavigationAction
-          label="Nearby"
-          icon={<LocationOnIcon />}
+          label="Users"
+          icon={<People  />}
           replace
           component={NavLink}
           to="/users"
