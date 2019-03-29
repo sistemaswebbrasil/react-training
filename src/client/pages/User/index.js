@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
-import { withSnackbar } from 'notistack';
 import { withStyles } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import ButtonBase from '@material-ui/core/ButtonBase';
-import { NavLink } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import ContentHeader from '../../components/ContentHeader';
-import api from '../../api';
+import api from '../../services/api';
 import Table from './Table';
-import Teste from './teste';
 
 const styles = theme => ({
   fab: {
@@ -46,7 +43,7 @@ class Users extends Component {
       <div>
         <ContentHeader title={`Usuários`} />
         <Fab size="small" color="secondary" color="primary" aria-label="Add">
-          <ButtonBase component={Link} to="/users/form">
+          <ButtonBase component={Link} to="/users/create">
             <AddIcon />
           </ButtonBase>
         </Fab>
@@ -56,5 +53,4 @@ class Users extends Component {
   }
 }
 
-// export default withStyles(styles)(withSnackbar(Users));
 export default withStyles(styles)(Users);

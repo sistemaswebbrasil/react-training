@@ -13,16 +13,18 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { login } from './LoginService';
+// import { login } from './LoginService';
 import { withSnackbar } from 'notistack';
 import Messages from '../../components/Messages';
+import api from '../../services/api';
+import { login } from '../../services/auth';
 
 class Login extends Component {
   constructor(props) {
     super(props);
     this.onFormSubmit = this.onFormSubmit.bind(this);
     this.state = {
-      fields: { email: 'adriano.faria@gmail.com', password: 'abc' },
+      fields: { email: 'adriano.faria@gmail.com', password: '' },
       showPassword: false,
       errors: null
     };
@@ -37,22 +39,41 @@ class Login extends Component {
     });
   }
 
-  onFormSubmit(evt) {
-    evt.preventDefault();
-    login(this.state.fields)
-      .then(resp => {
-        if (resp.token) {
-          this.props.onLoginSuccess(resp);
-        }
-      })
+  // onFormSubmit(evt) {
+  //   evt.preventDefault();
+  //   login(this.state.fields)
+  //     .then(resp => {
+  //       console.log(resp.token);
+  //       if (resp.token) {
+  //         this.props.onLoginSuccess(resp);
+  //         this.props.history.push('/');
+  //       }
+  //     })
 
-      .catch(e => {
-        this.setState({ errors: e });
-        if (e !== undefined) {
-          this.props.enqueueSnackbar(Messages(e), { variant: 'error' });
-        }
-      });
-  }
+  //     .catch(e => {
+  //       this.setState({ errors: e });
+  //       if (e !== undefined) {
+  //         this.props.enqueueSnackbar(Messages(e), { variant: 'error' });
+  //       }
+  //     });
+  // }
+
+  onFormSubmit = async e => {
+    e.preventDefault();
+    try {
+      const response = await api.post('login', this.state.fields);
+      login(response.data);
+      this.props.onLoginSuccess(response.data);
+      // this.props.history.push('/');
+    }
+    catch (e) {
+      this.setState({ errors: e.response });
+      if (e !== undefined) {
+        this.props.enqueueSnackbar(Messages(e), { variant: 'error' });
+      }
+      console.log(e);
+    }
+  };
 
   componentWillMount() {
     if (this.props.user) {

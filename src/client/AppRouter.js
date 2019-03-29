@@ -6,11 +6,11 @@ import About from './pages/About';
 import Users from './pages/User';
 import UserForm from './pages/User/UserForm';
 import App from './App';
-import { validateToken, logout } from './pages/Login/LoginService';
+import { validateToken } from './pages/Login/LoginService';
 import { withRouter } from 'react-router-dom';
 import withRoot from './withRoot';
-import api from './api';
 import { AuthContext,session} from './contexts/AuthContext'
+import { getToken,logout } from './services/auth';
 
 const userKey = '_training_user_key_';
 
@@ -28,17 +28,14 @@ export class AppRouter extends Component {
   }
 
   onLoginSuccess(resp) {
-    // api.defaults.headers.common['Authorization'] = 'asdasdasd';
-    api.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-    this.setState({ user: resp.user });
-    this.setState({ session: {"user":{"name":resp.username,"email":resp.email,"logged":true}} });
+    this.setState({ session: {"user":{"name":resp.user.username,"email":resp.user.email,"logged":true}} });
   }
 
   logOut() {
-    logout();
-    this.setState({ user: null });
     this.setState({ session: {"user":{"name":null,"email":null,"logged":false}} });
-    // this.props.history.push('/login');
+    logout();
+    console.log("sai")
+    this.props.history.push('/login');
   }
 
   componentWillMount() {
@@ -101,22 +98,27 @@ export class AppRouter extends Component {
 
         <AuthContext.Provider value={this.state}>
 
-          {user && (
+          {session.user.logged && (
             <Switch>
               <AppRoute exact path="/" layout={MainTemplate} component={Home} user={user} />
               <AppRoute exact path="/about" layout={MainTemplate} component={About} user={user} />
               <AppRoute exact path="/users" layout={MainTemplate} component={Users} user={user} />
               <AppRoute
                 exact
-                path="/users/form"
+                path="/users/create"
                 layout={MainTemplate}
                 component={UserForm}
-                user={user}
+              />
+              <AppRoute
+                exact
+                path="/users/:id/edit"
+                layout={MainTemplate}
+                component={UserForm}
               />
               <AppRoute exact path="/login" layout={LoginTemplate} component={Login} user={user} />
             </Switch>
           )}
-          {!user && <Login onLoginSuccess={this.onLoginSuccess.bind(this)} />}
+          {!session.user.logged && <Login onLoginSuccess={this.onLoginSuccess.bind(this)} />}
 
 
         </AuthContext.Provider>

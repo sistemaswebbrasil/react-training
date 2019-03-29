@@ -1,5 +1,5 @@
 import consts from '../../consts';
-import api from '../../api';
+import api from '../../services/api';
 
 const userKey = '_training_user_key_';
 
