@@ -22,7 +22,7 @@ function App(props) {
     <div className="App Site">
       <div className="Site-content">
         <div className="App-header">
-          <Header user={user} logout={logout} />
+          <Header />
         </div>
         <div className="main">
           <div className={classes.root}>

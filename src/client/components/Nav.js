@@ -4,14 +4,9 @@ import { NavLink } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 import MuiBottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-
-
 import Home from '@material-ui/icons/Home';
 import Help from '@material-ui/icons/Help';
 import People from '@material-ui/icons/People';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import RestoreIcon from '@material-ui/icons/Restore';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
 
 const styles = theme => ({
   root: {
@@ -78,7 +73,7 @@ class IconLabelTabs extends React.Component {
         />
         <BottomNavigationAction
           label="Users"
-          icon={<People  />}
+          icon={<People />}
           replace
           component={NavLink}
           to="/users"
