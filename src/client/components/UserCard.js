@@ -54,7 +54,7 @@ function ComplexGrid(props) {
   const { classes } = props;
   return (
     <AuthContext.Consumer>
-      {({ session }) => (
+      {({ session ,logOut}) => (
         <Grid container spacing={16}>
           <Grid item>
             <ButtonBase className={classes.image}>
@@ -73,6 +73,7 @@ function ComplexGrid(props) {
                   variant="contained"
                   color="primary"
                   className={classes.button}
+                  onClick={logOut}
                 >
                   Logout
                   <PowerSettingsNew className={classes.rightIcon} />

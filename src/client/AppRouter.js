@@ -22,7 +22,8 @@ export class AppRouter extends Component {
 
     this.state = {
       user: null,
-      session: session
+      session: session,
+      logOut: this.logOut,
     };
   }
 

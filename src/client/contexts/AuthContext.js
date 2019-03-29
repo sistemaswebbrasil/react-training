@@ -9,5 +9,6 @@ export const session = {
 };
 
 export const AuthContext = React.createContext({
-  session: session
+  session: session,
+  logOut: () => {}
 });
