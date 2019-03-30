@@ -39,25 +39,6 @@ class Login extends Component {
     });
   }
 
-  // onFormSubmit(evt) {
-  //   evt.preventDefault();
-  //   login(this.state.fields)
-  //     .then(resp => {
-  //       console.log(resp.token);
-  //       if (resp.token) {
-  //         this.props.onLoginSuccess(resp);
-  //         this.props.history.push('/');
-  //       }
-  //     })
-
-  //     .catch(e => {
-  //       this.setState({ errors: e });
-  //       if (e !== undefined) {
-  //         this.props.enqueueSnackbar(Messages(e), { variant: 'error' });
-  //       }
-  //     });
-  // }
-
   onFormSubmit = async e => {
     e.preventDefault();
     try {
@@ -65,8 +46,7 @@ class Login extends Component {
       login(response.data);
       this.props.onLoginSuccess(response.data);
       // this.props.history.push('/');
-    }
-    catch (e) {
+    } catch (e) {
       this.setState({ errors: e.response });
       if (e !== undefined) {
         this.props.enqueueSnackbar(Messages(e), { variant: 'error' });
