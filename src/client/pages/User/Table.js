@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -8,8 +8,8 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Edit from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { Link } from 'react-router-dom';
-import { Fab } from '@material-ui/core';
+import { Link, ButtonBase } from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
 
 const styles = theme => ({
   root: {
@@ -22,15 +22,22 @@ const styles = theme => ({
   }
 });
 
-const action = (id,classes) => (
-  <Link to={`users/${id}/edit`}>
-    <Edit color="secondary" />
-    <DeleteIcon color="error"/>
-  </Link>
-);
-
 function List(props) {
   const { classes, items } = props;
+
+  const action = id => (
+    <Fragment>
+      <IconButton aria-label="Edit">
+        <Link to={`users/${id}/edit`}>
+          <Edit color="secondary" />
+        </Link>
+      </IconButton>
+      <IconButton aria-label="Delete" onClick={() => props.handleDialog(id)}>
+        <DeleteIcon color="error" />
+      </IconButton>
+    </Fragment>
+  );
+
   return (
     <Paper className={classes.root}>
       <Table className={classes.table}>
@@ -46,7 +53,7 @@ function List(props) {
           {items.map((row, key) => (
             <TableRow key={key}>
               <TableCell component="th" scope="row">
-                {action(row.id,classes)}
+                {action(row.id)}
               </TableCell>
               <TableCell component="th" scope="row">
                 {row.id}
