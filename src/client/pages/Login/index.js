@@ -15,18 +15,20 @@ import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 // import { login } from './LoginService';
 import { withSnackbar } from 'notistack';
-import Messages from '../../components/Messages';
+import { MessageErrorArray } from '../../components/Messages';
 import api from '../../services/api';
 import { login } from '../../services/auth';
+import SnackbarMessages from '../../components/SnackbarMessages';
 
 class Login extends Component {
   constructor(props) {
     super(props);
     this.onFormSubmit = this.onFormSubmit.bind(this);
     this.state = {
-      fields: { email: 'adriano.faria@gmail.com', password: '' },
+      fields: { email: '', password: '' },
       showPassword: false,
-      errors: null
+      errors: null,
+      message: null
     };
   }
 
@@ -47,11 +49,7 @@ class Login extends Component {
       this.props.onLoginSuccess(response.data);
       // this.props.history.push('/');
     } catch (e) {
-      this.setState({ errors: e.response });
-      if (e !== undefined) {
-        this.props.enqueueSnackbar(Messages(e), { variant: 'error' });
-      }
-      console.log(e);
+      this.setState({ errors: e, message: '' });
     }
   };
 
@@ -59,6 +57,7 @@ class Login extends Component {
     if (this.props.user) {
       this.props.history.push('/');
     }
+    this.setState({ message: 'Olá teste , tudo ok ?' });
   }
 
   handleClickShowPassword = () => {
@@ -67,12 +66,13 @@ class Login extends Component {
 
   render() {
     const { email, password } = this.state.fields;
-    const { showPassword, errors } = this.state;
+    const { showPassword, errors, message } = this.state;
     const { classes } = this.props;
 
     return (
       <main className={classes.main}>
         <CssBaseline />
+        <SnackbarMessages error={errors} success={message} />
         <Paper className={classes.paper}>
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
@@ -87,7 +87,7 @@ class Login extends Component {
           >
             <FormControl
               margin="normal"
-              required
+              // required
               fullWidth
               error={errors ? errors.status == 401 : false}
             >
@@ -95,7 +95,7 @@ class Login extends Component {
               <Input
                 id="email"
                 name="email"
-                autoComplete="email"
+                autoComplete="new-email"
                 value={email}
                 error={errors ? errors.status == 401 : false}
                 autoFocus
@@ -103,7 +103,7 @@ class Login extends Component {
             </FormControl>
             <FormControl
               margin="normal"
-              required
+              // required
               fullWidth
               error={errors ? errors.status == 401 : false}
             >
@@ -112,7 +112,7 @@ class Login extends Component {
                 name="password"
                 type={showPassword ? 'text' : 'password'}
                 id="password"
-                autoComplete="current-password"
+                autoComplete="new-password"
                 value={password}
                 error={errors ? errors.status == 401 : false}
                 endAdornment={
