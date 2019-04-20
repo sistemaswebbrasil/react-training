@@ -1,12 +1,8 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import { NavLink } from 'react-router-dom';
-import { withRouter } from 'react-router-dom';
-import MuiBottomNavigation from '@material-ui/core/BottomNavigation';
-import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import Home from '@material-ui/icons/Home';
-import Help from '@material-ui/icons/Help';
-import People from '@material-ui/icons/People';
+import { NavLink, withRouter } from 'react-router-dom';
+import { BottomNavigation, BottomNavigationAction } from '@material-ui/core/';
+import { People, Help, Home } from '@material-ui/icons';
 
 const styles = theme => ({
   root: {
@@ -22,26 +18,18 @@ const styles = theme => ({
 
 class IconLabelTabs extends React.Component {
   state = {
-    value: null
+    value: this.props.history.location.pathname
   };
 
-  handleChange = () => {
-    this.setState({
-      value: this.props.history.location.pathname
-    });
+  handleChange = (event, value) => {
+    this.setState({ value });
   };
-
-  componentWillMount() {
-    this.setState({
-      value: this.props.history.location.pathname
-    });
-  }
 
   render() {
     const { classes } = this.props;
     const { value } = this.state;
     return (
-      <MuiBottomNavigation
+      <BottomNavigation
         value={value}
         onChange={this.handleChange}
         showLabels
@@ -83,7 +71,7 @@ class IconLabelTabs extends React.Component {
             selected: classes.selected
           }}
         />
-      </MuiBottomNavigation>
+      </BottomNavigation>
     );
   }
 }

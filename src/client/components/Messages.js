@@ -36,7 +36,11 @@ export const MessageErrorArray = e => {
     return ['Network error'];
   }
   const { data } = e.response;
-  return data;
+
+  if (data.error == undefined) {
+    return data;
+  }
+  return [data.error];
 };
 
 export const FieldMessage = (messages, field) => {

@@ -1,10 +1,10 @@
-import React from 'react'
+import React from 'react';
 
 export const session = {
   user: {
     name: null,
     email: null,
-    logged: false,
+    logged: false
   }
 };
 

@@ -1,24 +1,26 @@
 import React, { Component } from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import FormControl from '@material-ui/core/FormControl';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import IconButton from '@material-ui/core/IconButton';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import withStyles from '@material-ui/core/styles/withStyles';
-// import { login } from './LoginService';
-import { withSnackbar } from 'notistack';
-import { MessageErrorArray } from '../../components/Messages';
+import {
+  Paper,
+  Input,
+  IconButton,
+  InputAdornment,
+  Typography,
+  withStyles,
+  Avatar,
+  Button,
+  CssBaseline,
+  FormControl,
+  InputLabel,
+  CircularProgress
+} from '@material-ui/core';
+import { withRouter } from 'react-router';
+
 import api from '../../services/api';
-import { login } from '../../services/auth';
-import SnackbarMessages from '../../components/SnackbarMessages';
+import { login, isAuthenticated } from '../../services/auth';
+import withSnackbarMessages from '../../components/withSnackbarMessages';
 
 class Login extends Component {
   constructor(props) {
@@ -27,8 +29,8 @@ class Login extends Component {
     this.state = {
       fields: { email: '', password: '' },
       showPassword: false,
-      errors: null,
-      message: null
+      hasErrors: false,
+      loading: false
     };
   }
 
@@ -43,21 +45,23 @@ class Login extends Component {
 
   onFormSubmit = async e => {
     e.preventDefault();
+    this.setState({ loading: true });
     try {
       const response = await api.post('login', this.state.fields);
       login(response.data);
-      this.props.onLoginSuccess(response.data);
-      // this.props.history.push('/');
+      this.props.history.push('/');
     } catch (e) {
-      this.setState({ errors: e, message: '' });
+      console.log(e);
+      this.setState({ hasErrors: true });
+      this.props.errorMessage(e);
+      this.setState({ loading: false });
     }
   };
 
   componentWillMount() {
-    if (this.props.user) {
+    if (isAuthenticated()) {
       this.props.history.push('/');
     }
-    this.setState({ message: 'Olá teste , tudo ok ?' });
   }
 
   handleClickShowPassword = () => {
@@ -66,13 +70,12 @@ class Login extends Component {
 
   render() {
     const { email, password } = this.state.fields;
-    const { showPassword, errors, message } = this.state;
+    const { showPassword, hasErrors, loading } = this.state;
     const { classes } = this.props;
 
     return (
       <main className={classes.main}>
         <CssBaseline />
-        <SnackbarMessages error={errors} success={message} />
         <Paper className={classes.paper}>
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
@@ -85,28 +88,20 @@ class Login extends Component {
             onChange={this.onInputChange.bind(this)}
             onSubmit={this.onFormSubmit.bind(this)}
           >
-            <FormControl
-              margin="normal"
-              // required
-              fullWidth
-              error={errors ? errors.status == 401 : false}
-            >
+            <FormControl margin="normal" required fullWidth error={hasErrors}>
               <InputLabel htmlFor="email">Email Address</InputLabel>
               <Input
                 id="email"
                 name="email"
+                type="email"
                 autoComplete="new-email"
                 value={email}
-                error={errors ? errors.status == 401 : false}
+                error={hasErrors}
+                disabled={loading}
                 autoFocus
               />
             </FormControl>
-            <FormControl
-              margin="normal"
-              // required
-              fullWidth
-              error={errors ? errors.status == 401 : false}
-            >
+            <FormControl margin="normal" required fullWidth error={hasErrors}>
               <InputLabel htmlFor="password">Password</InputLabel>
               <Input
                 name="password"
@@ -114,7 +109,8 @@ class Login extends Component {
                 id="password"
                 autoComplete="new-password"
                 value={password}
-                error={errors ? errors.status == 401 : false}
+                error={hasErrors}
+                disabled={loading}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -133,10 +129,12 @@ class Login extends Component {
               variant="contained"
               color="primary"
               className={classes.submit}
+              disabled={loading}
             >
               Sign in
             </Button>
           </form>
+          {loading && <CircularProgress className={classes.progress} />}
         </Paper>
       </main>
     );
@@ -172,7 +170,10 @@ const styles = theme => ({
   },
   submit: {
     marginTop: theme.spacing.unit * 3
+  },
+  progress: {
+    margin: theme.spacing.unit * 2
   }
 });
 
-export default withStyles(styles)(withSnackbar(Login));
+export default withSnackbarMessages(withRouter(withStyles(styles)(Login)));

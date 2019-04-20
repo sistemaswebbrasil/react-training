@@ -6,21 +6,17 @@ import PageHeader from '../../components/PageHeader';
 import { Grid } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import api from '../../services/api';
-import { withSnackbar } from 'notistack';
-import {
-  MessageError,
-  MessageErrorArray,
-  FieldMessage,
-  FieldHasError
-} from '../../components/Messages';
+import { withRouter } from 'react-router';
+import { MessageErrorArray, FieldMessage, FieldHasError } from '../../components/Messages';
+import withSnackbarMessages from '../../components/withSnackbarMessages';
 
 class UserForm extends Component {
   state = {
-    username: 'adriano',
-    email: 'adriano.faria@gmail.com',
+    username: '',
+    email: '',
     password: '',
     confirmPassword: '',
-    errors: null,
+    errors: [],
     title: null
   };
 
@@ -33,9 +29,7 @@ class UserForm extends Component {
         this.setState({ username: response.data.username, email: response.data.email });
       } catch (e) {
         this.setState({ errors: e.response.data });
-        if (e !== undefined) {
-          this.props.enqueueSnackbar(MessageError(e), { variant: 'error' });
-        }
+        this.props.MessageError(e);
       }
     } else {
       this.setState({ title: 'Novo Usuário' });
@@ -48,78 +42,35 @@ class UserForm extends Component {
     const { email, username, password, confirmPassword, errors } = this.state;
 
     if (!match.params.id && password !== confirmPassword) {
-      // alert("Passwords don't match");
-
-      // [{ "message": "unique validation failed on email", "field": "email", "validation": "unique" }, { "message": "required validation failed on password", "field": "password", "validation": "required" }]
-
-      // this.setState({
-      //   ...{ errors },
-      //   errors: {
-      //     message: 'password and confirm password same validation',
-      //     field: 'confirmPassword',
-      //     validation: 'same'
-      //   }
-      // });
-
       const error = {
         message: 'password and confirm password same validation',
         field: 'confirmPassword',
         validation: 'same'
       };
-
-      // this.setState({
-      //   errors: [...errors, error]
-      // });
-
-      this.setState(state => {
-        let errors = state.errors.filter(
-          item => item.field !== 'password' && item.field !== 'confirmPassword'
-        );
-
-        errors = errors.concat(error);
-        return {
-          errors
-        };
-      });
-
-      errors.map(item => {
-        this.props.enqueueSnackbar(item.message, {
-          variant: 'error'
-        });
-      });
-
-      console.log(errors);
-
-      // MessageErrorArray(e).map(item => {
-      //   this.props.enqueueSnackbar(item.message, {
-      //     variant: 'error'
-      //   });
-      // });
+      let err = errors;
+      if (errors) {
+        err = errors.filter(item => item.field !== 'password' && item.field !== 'confirmPassword');
+      }
+      this.setState({ errors: err.concat(error) });
+      this.props.errorMessageFromArray(err.concat(error));
     } else {
       try {
         await api.postOrPut('users', match.params.id || null, { email, username, password });
-        this.props.enqueueSnackbar('Ok', { variant: 'success' });
+        this.props.successMessage('Usuário criado');
         this.props.history.push('/users');
       } catch (e) {
         this.setState({ errors: MessageErrorArray(e) });
-        if (e !== undefined) {
-          MessageErrorArray(e).map(item => {
-            this.props.enqueueSnackbar(item.message, {
-              variant: 'error'
-            });
-          });
-        }
+        this.props.errorMessage(e);
       }
     }
   };
 
   render() {
-    const { username, email, title, errors } = this.state;
+    const { username, email, title, errors, password, confirmPassword } = this.state;
     const { match } = this.props;
     return (
       <form onSubmit={this.handleSubmit}>
         <Form onSubmit={this.handleSubmit}>
-          <h1>{JSON.stringify(errors)}</h1>
           <PageHeader title={title} />
           <Grid container spacing={24}>
             <Grid item xs={12} sm={6}>
@@ -142,9 +93,9 @@ class UserForm extends Component {
                 id="email"
                 name="email"
                 label="Email"
-                // type="email"
+                type="email"
                 fullWidth
-                autoComplete="fname"
+                autoComplete="off"
                 onChange={e => this.setState({ email: e.target.value })}
                 value={email}
                 error={errors && FieldHasError(errors, 'email')}
@@ -155,13 +106,13 @@ class UserForm extends Component {
               <Fragment>
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    // required
+                    required
                     id="password"
                     name="password"
                     label="Senha"
                     type="password"
                     fullWidth
-                    autoComplete="fname"
+                    autoComplete="off"
                     onChange={e => this.setState({ password: e.target.value })}
                     error={errors && FieldHasError(errors, 'password')}
                     helperText={errors && FieldMessage(errors, 'password')}
@@ -169,7 +120,7 @@ class UserForm extends Component {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    // required
+                    required
                     id="confirmPassword"
                     name="confirmPassword"
                     label="Confirme a Senha"
@@ -193,5 +144,4 @@ class UserForm extends Component {
   }
 }
 
-export default withSnackbar(UserForm);
-// confirmPassword;
+export default withSnackbarMessages(withRouter(UserForm));

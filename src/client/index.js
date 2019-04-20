@@ -4,7 +4,7 @@ import { HashRouter } from 'react-router-dom';
 import { SnackbarProvider } from 'notistack';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
-import AppRouter from './AppRouter';
+import Routes from './Routes';
 
 ReactDOM.render(
   <HashRouter>
@@ -17,7 +17,7 @@ ReactDOM.render(
         </IconButton>
       }
     >
-      <AppRouter />
+      <Routes />
     </SnackbarProvider>
   </HashRouter>,
   document.getElementById('root')
